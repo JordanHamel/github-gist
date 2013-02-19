@@ -1,0 +1,19 @@
+// Place all the styles related to the Favorites controller here.
+// Thy will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.favorite-button {
+  display: block;
+}
+
+.unfavorite-button {
+  display: none;
+}
+
+.favorited .favorite-button {
+  display: none;
+}
+
+.favorited .unfavorite-button {
+  display: block;
+}

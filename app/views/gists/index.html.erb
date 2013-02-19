@@ -1,0 +1,35 @@
+<h1>Your Gists</h1>
+
+<% @gists.each do |gist| %>
+
+
+  <li>
+    <%= gist.title %>
+    <div class="buttons <%= "favorited" if favorited?(gist) %>">
+    <%= button_to "favorite", gist_favorite_path(gist.id), :remote => true,
+        :gist_id => gist.id, :form_class => 'favorite-button' %>
+
+    <%= button_to "un-favorite", gist_favorite_path(gist.id),
+        :method => :delete, :remote => true,
+        :gist_id => gist.id, :form_class => 'unfavorite-button' %>
+    </div>
+  </li>
+
+<% end %>
+
+<script>
+  $(function() {
+    $('.favorite-button').on('ajax:success', function(event) {
+      $(this).closest(".buttons").addClass("favorited");
+    }),
+
+    $('.unfavorite-button').on('ajax:success', function(event) {
+      $(this).closest(".buttons").removeClass("favorited");
+    })
+
+
+  })
+</script>
+
+
+

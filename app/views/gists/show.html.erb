@@ -1,0 +1,11 @@
+<h1>The Gist Show Page!</h1>
+
+<%= @gist.title %>
+
+<ul>
+  <% @gist.gist_files.each do |gf| %>
+
+    <li><%= gf.body %></li>
+
+  <% end %>
+</ul>

@@ -1,0 +1,27 @@
+<h1>Create a Gist!</h1>
+
+<%= simple_form_for @gist do |f| %>
+
+  <%= f.input :title %>
+
+  <p>Gist Files:</p>
+
+    <%= f.simple_fields_for :gist_files do |gf| %>
+      <div class="gist-file-form">
+        <%= gf.input :body %>
+        <%= link_to "remove file", href="#" %>
+      </div>
+    <% end %>
+
+  <%= f.submit %>
+
+<% end %>
+
+
+<script>
+  $(function() {
+    $('a').on('click', function(event) {
+      $(this).parent().remove();
+    })
+  })
+</script>
