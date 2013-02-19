@@ -21,6 +21,10 @@
 
     <div class="tag-dropdown">
       <input id="tag-input" type="text">
+      <ul class="dropdown-list"></ul>
+    </div>
+
+    <div class="chosen-tags">
     </div>
 
       <%#= f.input :tag_ids,
@@ -54,24 +58,27 @@
     });
 
     $('#tag-input').focus(function(event) {
-      $('.tag-dropdown').append('<ul class="dropdown-list"></ul>')
+      $('.dropdown-list').empty().show();
 
       $.each(tags, function() {
-        $('.dropdown-list').append('<li class="tag-option" data-tag-id="' + this.id + '">' + this.name + '</li>')
+        $('.dropdown-list').append('<li data-tag-id="' + this.id + '">' + this.name + '</li>')
       });
     });
 
     $('#tag-input').blur(function(event) {
-      $('.dropdown-list').remove();
+      window.setTimeout(function() {
+        $('.dropdown-list').hide();
+      }, 200);
     });
 
     $.get("/tags.json", function(data) {
       tags = data;
      });
 
-    $('.tag-dropdown').on('click', '.tag-option', function() {
-      console.log(this);
+    $('.dropdown-list').on('click', 'li', function() {
+      console.log('hi');
       $('form').append('<input name="gist[tag_ids][]" type="hidden" value="' + $(this).attr('data-tag-id') + '">');
+      $('.chosen-tags').append($(this).text() + " ");
     });
 
 
@@ -85,7 +92,7 @@
         for(var i in tags) {
           if (tags[i].name.toLowerCase().match(string)) {
             $(".dropdown-list").append(
-            $("<li>" + tags[i].name + "</li>")
+            $("<li data-tag-id='" + tags[i].id + "'>" + tags[i].name + "</li>")
               // .addClass("listOption")
             ) };
         }
