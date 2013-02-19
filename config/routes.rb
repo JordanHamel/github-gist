@@ -8,6 +8,7 @@ GistProject::Application.routes.draw do
     resources :gist_files
   end
   resources :favorites, only: [:index]
+  resources :tags, only: [:index]
 
 
 # resources :gists

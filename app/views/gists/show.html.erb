@@ -9,3 +9,11 @@
 
   <% end %>
 </ul>
+
+<ul>
+  <% @gist.tags.each do |tag| %>
+
+    <li><%= tag.name %></li>
+
+  <% end %>
+</ul>

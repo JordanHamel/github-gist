@@ -14,6 +14,7 @@ class GistsController < ApplicationController
       redirect_to @gist
     else
       flash[:error] = "Try again!"
+      p @gist.errors.full_messages     # log errors to the Rails server
       render 'new'
     end
   end

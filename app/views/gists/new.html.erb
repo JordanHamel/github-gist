@@ -10,30 +10,99 @@
       <%= f.simple_fields_for :gist_files do |gf| %>
         <div class="gist-file-form">
           <%= gf.input :body %>
-          <%#= link_to "remove file", href="#" %>
           <a href="#" class="remove-file-button">Remove file</a>
         </div>
       <% end %>
     </div>
 
     <a href="#" class="add-file-button">Add file</a>
-  <%= f.submit %>
 
+    <p>Tags:</p>
+
+    <div class="tag-dropdown">
+      <input id="tag-input" type="text">
+    </div>
+
+      <%#= f.input :tag_ids,
+                  :label => '',
+                  :collection => Tag.all,
+                  :label_method => :name,
+                  :value_method => :id,
+                  :as => :check_boxes %>
+
+  <%= f.button :submit %>
 <% end %>
 
-
 <script>
+
+  var tags = [];
+
   $(function() {
     $('.gist-file-forms').on('click', '.remove-file-button', function(event) {
       $(this).parent().remove();
-    }),
+    });
 
     $('.add-file-button').on('click', function(event) {
       var form = $('.gist-file-form').first().clone();
+      var formHtml = form.html();  // html() takes inner html, leaves off outer div
+
+      formHtml = formHtml.replace("[0]", "[" + new Date().getTime() + "]");
+
+      form.html(formHtml);  // replace content of form with formHtml in order to keep the outer div
       $(form).appendTo('.gist-file-forms');
 
-    })
+    });
+
+    $('#tag-input').focus(function(event) {
+      $('.tag-dropdown').append('<ul class="dropdown-list"></ul>')
+
+      $.each(tags, function() {
+        $('.dropdown-list').append('<li class="tag-option" data-tag-id="' + this.id + '">' + this.name + '</li>')
+      });
+    });
+
+    $('#tag-input').blur(function(event) {
+      $('.dropdown-list').remove();
+    });
+
+    $.get("/tags.json", function(data) {
+      tags = data;
+     });
+
+    $('.tag-dropdown').on('click', '.tag-option', function() {
+      console.log(this);
+      $('form').append('<input name="gist[tag_ids][]" type="hidden" value="' + $(this).attr('data-tag-id') + '">');
+    });
 
 
-  })
+    $('#tag-input').keyup(autocompleteHandler);
+
+    function autocompleteHandler(event) {
+      string = $(this).val().toLowerCase();
+
+        $('.dropdown-list').empty();
+
+        for(var i in tags) {
+          if (tags[i].name.toLowerCase().match(string)) {
+            $(".dropdown-list").append(
+            $("<li>" + tags[i].name + "</li>")
+              // .addClass("listOption")
+            ) };
+        }
+      };
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
