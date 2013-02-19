@@ -6,13 +6,17 @@
 
   <p>Gist Files:</p>
 
-    <%= f.simple_fields_for :gist_files do |gf| %>
-      <div class="gist-file-form">
-        <%= gf.input :body %>
-        <%= link_to "remove file", href="#" %>
-      </div>
-    <% end %>
+    <div class="gist-file-forms">
+      <%= f.simple_fields_for :gist_files do |gf| %>
+        <div class="gist-file-form">
+          <%= gf.input :body %>
+          <%#= link_to "remove file", href="#" %>
+          <a href="#" class="remove-file-button">Remove file</a>
+        </div>
+      <% end %>
+    </div>
 
+    <a href="#" class="add-file-button">Add file</a>
   <%= f.submit %>
 
 <% end %>
@@ -20,8 +24,16 @@
 
 <script>
   $(function() {
-    $('a').on('click', function(event) {
+    $('.gist-file-forms').on('click', '.remove-file-button', function(event) {
       $(this).parent().remove();
+    }),
+
+    $('.add-file-button').on('click', function(event) {
+      var form = $('.gist-file-form').first().clone();
+      $(form).appendTo('.gist-file-forms');
+
     })
+
+
   })
 </script>
